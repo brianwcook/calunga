@@ -44,7 +44,7 @@ jobs:
           echo "formattedResults<<EOF" >> $GITHUB_OUTPUT
           echo "$RESULTS" | jq -r '.checks[] | [.score, .name, .reason] | @tsv' | column -t -s $'\t' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          cho "score<<EOF" >> $GITHUB_OUTPUT
+          echo "score<<EOF" >> $GITHUB_OUTPUT
           echo "$RESULTS" |  jq '.score' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
