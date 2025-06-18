@@ -16,6 +16,8 @@ jobs:
   check-scorecard:
     if: ${{ github.event.label.name == 'new-package' || github.event.action == 'opened' }}
     runs-on: ubuntu-latest
+    outputs:
+      pass: ${{ steps.check.outputs.pass }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,7 +50,6 @@ jobs:
           echo "$RESULTS" |  jq '.score' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-
       - name: Post Scorecard Results
         uses: actions/github-script@v7
         with:
@@ -62,14 +63,12 @@ jobs:
 
       # Step 1: Simulate getting a numeric score and output a boolean
       - name: Compute and output passing_score
-        id: scorecard_result
+        id: check
         run: |
-          score=$SCORE
-          pass=$([ "$score" -ge 7 ] && echo true || echo false)
-          echo "score=$score" >> $GITHUB_OUTPUT
+          score=${{ steps.scorecard.outputs.score }}
+          pass=$([ "$score" -ge 7 ] && echo "true" || echo "false")
           echo "pass=$pass" >> $GITHUB_OUTPUT
         env:
-          SCORE: ${{ steps.scorecard.outputs.score }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: failing-score
@@ -80,7 +79,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   onboard-package:
-    if: ${{ github.event.label.name == 'on-board' || (github.event.label.name == 'new-package' && fromJSON(steps.check.outputs.pass)) }}
+    if: ${{ github.event.label.name == 'on-board' ||  fromJSON(needs.check-scorecard.outputs.pass) }}
     needs: check-scorecard
     runs-on: ubuntu-latest
     permissions:
