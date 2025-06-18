@@ -125,10 +125,3 @@ jobs:
             Fixes: #${{ github.event.issue.number }}
           sign-commits: true
           signoff: true
-
-
- podman run --rm \
-            -e GITHUB_AUTH_TOKEN=$GITHUB_AUTH_TOKEN \
-            gcr.io/openssf/scorecard:stable \
-            --checks=Contributors,Pinned-Dependencies,Signed-Releases,Binary-Artifacts,Code-Review,Dependency-Update-Tool,License,Packaging,SAST,Security-Policy,Vulnerabilities,Dangerous-Workflow,Fuzzing,CI-Tests,Token-Permissions,CII-Best-Practices,Maintained \
-            --pypi requests
