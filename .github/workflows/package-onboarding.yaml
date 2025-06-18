@@ -6,9 +6,9 @@ on:
     types: [opened,labeled]
 
 permissions:
-  contents: read
+  contents: write
   issues: write
-  pull-requests: read
+  pull-requests: write
   checks: read
   security-events: read
 
@@ -60,11 +60,16 @@ jobs:
               body: `## OpenSSF Scorecard Results\n\n\`\`\`\n\n\n${{ steps.scorecard.outputs.score }}\n\n${{ steps.scorecard.outputs.formattedResults }}\n\`\`\``
             });
 
-      - name: passing-score
-        if: ${{ fromJSON(steps.scorecard.outputs.score) >= 7 }}
+      # Step 1: Simulate getting a numeric score and output a boolean
+      - name: Compute and output passing_score
+        id: scorecard_result
         run: |
-          gh issue edit ${{ github.event.issue.number }} --add-label on-board
+          score=$SCORE
+          pass=$([ "$score" -ge 7 ] && echo true || echo false)
+          echo "score=$score" >> $GITHUB_OUTPUT
+          echo "pass=$pass" >> $GITHUB_OUTPUT
         env:
+          SCORE: ${{ steps.scorecard.outputs.score }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: failing-score
@@ -75,7 +80,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   onboard-package:
-    if: github.event.label.name == 'on-board'
+    if: ${{ github.event.label.name == 'on-board' || (github.event.label.name == 'new-package' && fromJSON(steps.check.outputs.pass)) }}
     needs: check-scorecard
     runs-on: ubuntu-latest
     permissions:
