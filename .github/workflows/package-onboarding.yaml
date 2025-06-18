@@ -44,6 +44,9 @@ jobs:
           echo "formattedResults<<EOF" >> $GITHUB_OUTPUT
           echo "$RESULTS" | jq -r '.checks[] | [.score, .name, .reason] | @tsv' | column -t -s $'\t' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          cho "score<<EOF" >> $GITHUB_OUTPUT
+          echo "$RESULTS" |  jq '.score' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
 
       - name: Post Scorecard Results
@@ -54,7 +57,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## OpenSSF Scorecard Results\n\n\`\`\`\n${{ steps.scorecard.outputs.formattedResults }}\n\`\`\``
+              body: `## OpenSSF Scorecard Results\n\n\`\`\`\n\n\n${{ steps.scorecard.outputs.score }}\n\n${{ steps.scorecard.outputs.formattedResults }}\n\`\`\``
             });
 
   onboard-package:
