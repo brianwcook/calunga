@@ -66,11 +66,13 @@ jobs:
         id: check
         run: |
           score=${{ steps.scorecard.outputs.score }}
-          if [ "$score" -ge 7 ]; then
+          if (( $(echo "$score >= 7" | bc -l) )); then
             echo "pass=true" >> $GITHUB_OUTPUT
           else
             echo "pass=false" >> $GITHUB_OUTPUT
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: failing-score
         if: ${{ fromJSON(steps.scorecard.outputs.score) < 7 }}
