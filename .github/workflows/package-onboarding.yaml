@@ -64,11 +64,15 @@ jobs:
         if: ${{ fromJSON(steps.scorecard.outputs.score) >= 7 }}
         run: |
           gh issue edit ${{ github.event.issue.number }} --add-label on-board
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: failing-score
         if: ${{ fromJSON(steps.scorecard.outputs.score) < 7 }}
         run: |
           gh issue edit ${{ github.event.issue.number }} --add-label needs-review
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   onboard-package:
     if: github.event.label.name == 'on-board'
