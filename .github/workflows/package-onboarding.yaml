@@ -60,6 +60,16 @@ jobs:
               body: `## OpenSSF Scorecard Results\n\n\`\`\`\n\n\n${{ steps.scorecard.outputs.score }}\n\n${{ steps.scorecard.outputs.formattedResults }}\n\`\`\``
             });
 
+      - name: passing-score
+        if: ${{ fromJSON(steps.scorecard.outputs.score) >= 7 }}
+        run: |
+          gh issue add-label ${{ github.event.issue.number }} on-board
+
+      - name: failing-score
+        if: ${{ fromJSON(steps.scorecard.outputs.score) < 7 }}
+        run: |
+          gh issue add-label ${{ github.event.issue.number }} needs-review
+
   onboard-package:
     if: github.event.label.name == 'on-board'
     needs: check-scorecard

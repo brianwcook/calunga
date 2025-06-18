@@ -1,0 +1,17 @@
+---
+name: Auto-label new issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write  # Required to modify issue labels
+
+    steps:
+      - name: new-package
+        run: |
+          gh issue add-label ${{ github.event.issue.number }} new-package
