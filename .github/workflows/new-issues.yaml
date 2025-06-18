@@ -14,4 +14,4 @@ jobs:
     steps:
       - name: new-package
         run: |
-          gh issue add-label ${{ github.event.issue.number }} new-package
+          gh issue edit ${{ github.event.issue.number }} --add-label new-package

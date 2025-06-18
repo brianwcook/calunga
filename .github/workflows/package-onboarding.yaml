@@ -63,12 +63,12 @@ jobs:
       - name: passing-score
         if: ${{ fromJSON(steps.scorecard.outputs.score) >= 7 }}
         run: |
-          gh issue add-label ${{ github.event.issue.number }} on-board
+          gh issue edit ${{ github.event.issue.number }} --add-label on-board
 
       - name: failing-score
         if: ${{ fromJSON(steps.scorecard.outputs.score) < 7 }}
         run: |
-          gh issue add-label ${{ github.event.issue.number }} needs-review
+          gh issue edit ${{ github.event.issue.number }} --add-label needs-review
 
   onboard-package:
     if: github.event.label.name == 'on-board'
