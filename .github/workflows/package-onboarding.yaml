@@ -3,7 +3,7 @@ name: Package Onboarding
 
 on:
   issues:
-    types: [opened, edited]
+    types: [labeled, opened]
 
 permissions:
   contents: read
