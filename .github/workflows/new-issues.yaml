@@ -17,6 +17,12 @@ jobs:
       issues: write  # Required to modify issue labels
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up GitHub CLI
+        uses: cli/cli-action@v2
+      
       - name: new-package
         run: |
           gh issue edit ${{ github.event.issue.number }} --add-label new-package
