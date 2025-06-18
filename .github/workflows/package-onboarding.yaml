@@ -82,10 +82,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   onboard-package:
-    needs: check-scorecard
     if: |
       github.event.label.name == 'on-board' || 
       (needs.check-scorecard.result == 'success' && needs.check-scorecard.outputs.pass == 'true')
+    needs: ${{ github.event.label.name != 'on-board' && 'check-scorecard' || '' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
