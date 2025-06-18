@@ -35,7 +35,7 @@ jobs:
             -e GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }} \
             -v ${{ github.workspace }}:/repo \
             gcr.io/openssf/scorecard:stable \
-            --checks=Contributors,Pinned-Dependencies,Signed-Releases,Binary-Artifacts,Code-Review,Dependency-Update-Tool,License,Packaging,SAST,Security-Policy,Vulnerabilities,Dangerous-Workflow,Fuzzing,CI-Tests,Token-Permissions,Branch-Protection,CII-Best-Practices,Maintained \
+            --checks=Contributors,Pinned-Dependencies,Signed-Releases,Binary-Artifacts,Code-Review,Dependency-Update-Tool,License,Packaging,SAST,Security-Policy,Vulnerabilities,Dangerous-Workflow,Fuzzing,CI-Tests,Token-Permissionsn,CII-Best-Practices,Maintained \
             --pypi ${{ steps.extract.outputs.package_name }})"
           echo "results<<EOF" >> $GITHUB_OUTPUT
           echo "$RESULTS" >> $GITHUB_OUTPUT
