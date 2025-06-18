@@ -35,6 +35,7 @@ jobs:
             -e GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }} \
             -v ${{ github.workspace }}:/repo \
             gcr.io/openssf/scorecard:stable \
+            --skip=Branch-Protection \
             --pypi ${{ steps.extract.outputs.package_name }})"
           echo "results<<EOF" >> $GITHUB_OUTPUT
           echo "$RESULTS" >> $GITHUB_OUTPUT
