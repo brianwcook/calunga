@@ -36,7 +36,7 @@ jobs:
             -v ${{ github.workspace }}:/repo \
             gcr.io/openssf/scorecard:stable \
             --checks=Contributors,Pinned-Dependencies,Signed-Releases,Binary-Artifacts,Code-Review,Dependency-Update-Tool,License,Packaging,SAST,Security-Policy,Vulnerabilities,Dangerous-Workflow,Fuzzing,CI-Tests,Token-Permissions,CII-Best-Practices,Maintained \
-            --format json
+            --format json \
             --pypi ${{ steps.extract.outputs.package_name }})"
           echo "results<<EOF" >> $GITHUB_OUTPUT
           echo "$RESULTS" >> $GITHUB_OUTPUT
