@@ -75,7 +75,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   onboard-package:
-    if: ${{ (github.event.label.name == 'on-board' || github.event.action == 'opened') && steps.scorecard.outputs.score >= 7 }}
+    if: github.event.label.name == 'on-board'
+    needs: check-scorecard
     runs-on: ubuntu-latest
     permissions:
       contents: write
